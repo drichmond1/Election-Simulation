@@ -461,7 +461,7 @@ public class Election {
                     probabilityList.add("no");
                 }
                 Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)+1).equals("yes");
+                return probabilityList.get(rand.nextInt(10)).equals("yes");
             }
             case 2: {
                 probabilityList = new ArrayList();
@@ -471,7 +471,7 @@ public class Election {
                     probabilityList.add("no");
                 }
                 Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)+1).equals("yes");
+                return probabilityList.get(rand.nextInt(10)).equals("yes");
             }
             case 3: {
                 probabilityList = new ArrayList();
@@ -482,7 +482,7 @@ public class Election {
                     probabilityList.add("no");
                 }
                 Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)+1).equals("yes");
+                return probabilityList.get(rand.nextInt(10)).equals("yes");
             }
             case 4: {
                 probabilityList = new ArrayList();
@@ -494,7 +494,7 @@ public class Election {
                     probabilityList.add("no");
                 }
                 Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)+1).equals("yes");
+                return probabilityList.get(rand.nextInt(10)).equals("yes");
             }
 
             case 5: {
@@ -507,7 +507,7 @@ public class Election {
                     probabilityList.add("no");
                 }
                 Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)+1).equals("yes");
+                return probabilityList.get(rand.nextInt(10)).equals("yes");
             }
             case 6: {
                 probabilityList = new ArrayList();
@@ -519,7 +519,7 @@ public class Election {
                     probabilityList.add("no");
                 }
                 Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)+1).equals("yes");
+                return probabilityList.get(rand.nextInt(10)).equals("yes");
             }
             case 7: {
                 probabilityList = new ArrayList();
@@ -531,7 +531,7 @@ public class Election {
                     probabilityList.add("no");
                 }
                 Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)+1).equals("yes");
+                return probabilityList.get(rand.nextInt(10)).equals("yes");
             }
             case 8: {
                 probabilityList = new ArrayList();
@@ -543,7 +543,7 @@ public class Election {
                     probabilityList.add("no");
                 }
                 Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)+1).equals("yes");
+                return probabilityList.get(rand.nextInt(10)).equals("yes");
             }
             case 9: {
                 probabilityList = new ArrayList();
@@ -555,7 +555,7 @@ public class Election {
                     probabilityList.add("no");
                 }
                 Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)+1).equals("yes");
+                return probabilityList.get(rand.nextInt(10)).equals("yes");
             }
 
             case 10: {

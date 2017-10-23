@@ -29,7 +29,10 @@ public class Condorcet implements VotingSystem {
 
     @Override
     public String getWinner() {
-        return winner;
+        if (winner!=null){
+        return winner;}
+        else 
+            return "null";
     }
 
     @Override
@@ -38,35 +41,36 @@ public class Condorcet implements VotingSystem {
     }
 
     private void determineWinner(Candidate[] candidates) {
-
+      
         for (int candidateA = 0; candidateA < candidates.length; candidateA++) {
 
-            int VotesOfcandidateA = 0;
-            int VotesOfcandidateB = 0;
+            int VotesOfcandidateA;
+            int VotesOfcandidateB ;
 
             boolean condorcet = true;
-            for (int CandidateB = 0; CandidateB < candidates.length; CandidateB++) {
+            for (int CandidateB = 0; CandidateB < candidates.length&&condorcet; CandidateB++) {
+                VotesOfcandidateA=0;
+                VotesOfcandidateB=0;
                 if (candidateA != CandidateB) {
 
                     for (Map.Entry<List<Candidate>, Integer> entry : aggregatePreferences.entrySet()) {
                         List<Candidate> candList = entry.getKey();
-                        for (int cand = 0; cand < candList.size(); cand++) {
+                        boolean found=false;
+                        for (int cand = 0; cand < candList.size()&&!found; cand++) {
                             if (candList.get(cand).getId() == candidates[candidateA].getId()) {
                                 VotesOfcandidateA += entry.getValue();
-                                break;
+                                found=true;
                             } else if (candList.get(cand).getId() == candidates[CandidateB].getId()) {
 
                                 VotesOfcandidateB += entry.getValue();
-                                break;
+                                found=true;
+                               
                             }
                         }
                     }
-                    if (VotesOfcandidateA < VotesOfcandidateB) {
+                    if (VotesOfcandidateA <= VotesOfcandidateB) {
                         condorcet = false;
 
-                    }
-                    if (!condorcet) {
-                        break;
                     }
 
                 }

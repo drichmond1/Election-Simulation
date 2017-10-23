@@ -87,8 +87,9 @@ public class BordaCount implements VotingSystem {
 
                 list.add((double) positions[row][column] * position);
                 countMap.put(candidates[row].getName(), list);
+                if (column==positions[row].length-1){
                 System.out.print("\nFor candidate: " + candidates[row].getName());
-                System.out.println(" the Borda points list becomes " + list);
+                System.out.println(" the Borda points list becomes " + list);}
                 position--;
 
             }

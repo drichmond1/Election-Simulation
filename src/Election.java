@@ -144,6 +144,7 @@ public class Election {
                 System.out.print("winner by Borda counts is " + borda.getWinner());
                 if (!borda.getWinner().equals("tied")) {
                     System.out.printf("%s%.2f\n", ", with an average score of ", borda.getWinnerAverageScore());
+                    System.out.println("");
                     satisfaction2 = showSatisfaction(borda.getWinnerId());
                     if (plurality.getWinnerId() != borda.getWinnerId()) {
                         records.add(satisfaction2 - satisfaction1);

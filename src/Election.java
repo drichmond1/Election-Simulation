@@ -26,7 +26,7 @@ public class Election {
     private static Map<List<Candidate>, Integer> aggregatePreferences;
     private static int pluralityVsCondorcet = 0;
     private static int bordaCountVsCondorcet = 0;
-    private static Scanner keyboard = new Scanner(System.in);
+    private static final Scanner KEYBOARD = new Scanner(System.in);
 
     public static void main(String[] args) {
         getUserInputs();
@@ -58,14 +58,14 @@ public class Election {
             valid = true;
             System.out.println("Enter number of candidates");
             try {
-                numberOfCandidates = keyboard.nextInt();
+                numberOfCandidates = KEYBOARD.nextInt();
                 if (numberOfCandidates < MIN_NUMBER_OF_CANDIDATES) {
                     throw new Exception();
                 }
                 createCandidates();
             } catch (InputMismatchException e) {
                 System.out.println("Non-numeric value entered for number of candidates");
-                keyboard.nextLine();
+                KEYBOARD.nextLine();
                 valid = false;
             } catch (Exception e) {
                 System.out.println("Invalid value entered for number of candidates, must be at least " + MIN_NUMBER_OF_CANDIDATES);
@@ -83,18 +83,18 @@ public class Election {
             valid = true;
             try {
                 System.out.println("Enter number of voters");
-                numberOfVoters = keyboard.nextInt();
+                numberOfVoters = KEYBOARD.nextInt();
                 if (numberOfVoters < MIN_NUMBER_OF_VOTERS) {
                     throw new Exception();
                 }
 
             } catch (InputMismatchException e) {
                 System.out.println("Non-numeric value entered for number of voters");
-                keyboard.nextLine();
+                KEYBOARD.nextLine();
                 valid = false;
             } catch (Exception e) {
                 System.out.println("Invalid value entered for number of candidates, must be at least " + MIN_NUMBER_OF_VOTERS);
-                keyboard.nextLine();
+                KEYBOARD.nextLine();
                 valid = false;
 
             }
@@ -108,17 +108,17 @@ public class Election {
             valid = true;
             try {
                 System.out.println("Level of polarity? (0-10)");
-                polarityLevel = keyboard.nextInt();
+                polarityLevel = KEYBOARD.nextInt();
                 if (polarityLevel < MIN_POLARITY_LEVEL || polarityLevel > MAX_POLARITY_LEVEL) {
                     throw new Exception();
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Non-numeric value entered for polarity");
-                keyboard.nextLine();
+                KEYBOARD.nextLine();
                 valid = false;
             } catch (Exception e) {
                 System.out.println("Invalid value entered for level of polarity, must be between " + MIN_POLARITY_LEVEL + " and " + MAX_POLARITY_LEVEL);
-                keyboard.nextLine();
+                KEYBOARD.nextLine();
                 valid = false;
 
             }
@@ -133,18 +133,18 @@ public class Election {
             valid = true;
             try {
                 System.out.println("Id of Polarizing candidate?");
-                id = keyboard.nextInt();
+                id = KEYBOARD.nextInt();
                 if (id < 1 || id > numberOfCandidates) {
                     throw new Exception();
 
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Non-numeric value entered for Id of polarizing candidate");
-                keyboard.nextLine();
+                KEYBOARD.nextLine();
                 valid = false;
             } catch (Exception e) {
                 System.out.println("Invalid value entered for Id of polarizing candidate, must be between 1 and " + numberOfCandidates);
-                keyboard.nextLine();
+                KEYBOARD.nextLine();
                 valid = false;
 
             }
@@ -153,23 +153,22 @@ public class Election {
     }
 
     private static void getNumberOfSamples() {
-        Scanner keyboard = new Scanner(System.in);
         boolean valid;
         do {
             valid = true;
             try {
                 System.out.println("Number of Samples?");
-                numberOfSamples = keyboard.nextInt();
+                numberOfSamples = KEYBOARD.nextInt();
                 if (numberOfSamples < MIN_NUMBER_OF_SAMPLES) {
                     throw new Exception();
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Non-numeric value entered for number of samples");
-                keyboard.nextLine();
+                KEYBOARD.nextLine();
                 valid = false;
             } catch (Exception e) {
                 System.out.println("Invalid value entered for number of samples, must be at least " + MIN_NUMBER_OF_SAMPLES);
-                keyboard.nextLine();
+                KEYBOARD.nextLine();
                 valid = false;
 
             }
@@ -234,11 +233,11 @@ public class Election {
     }
 
     private static void createCandidates() {
-        Scanner keyboard = new Scanner(System.in);
+        KEYBOARD.nextLine();
         candidates = new Candidate[numberOfCandidates];
         for (int i = 0; i < numberOfCandidates; i++) {
             System.out.println("name of candidate " + (i + 1));
-            String name = keyboard.nextLine();
+            String name = KEYBOARD.nextLine();
             candidates[i] = new Candidate(i + 1, name);
 
         }
@@ -262,8 +261,8 @@ public class Election {
         } catch (IllegalArgumentException e) {
             do {
                 System.out.println("Enter a valid level polarity (0-10)");
-                Scanner keyboard = new Scanner(System.in);
-                polarityLevel = keyboard.nextInt();
+                
+                polarityLevel = KEYBOARD.nextInt();
             } while (polarityLevel < 0 || polarityLevel > 10);
         }
 

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -10,6 +11,11 @@ import java.util.Scanner;
 
 public class Election {
 
+    private static final int MIN_NUMBER_OF_CANDIDATES = 2;
+    private static final int MIN_NUMBER_OF_VOTERS = 2;
+    private static final int MIN_POLARITY_LEVEL = 0;
+    private static final int MAX_POLARITY_LEVEL = 10;
+    private static final int MIN_NUMBER_OF_SAMPLES = 1;
     private static int numberOfCandidates;
     private static int numberOfVoters;
     private static Candidate[] candidates;
@@ -20,6 +26,7 @@ public class Election {
     private static Map<List<Candidate>, Integer> aggregatePreferences;
     private static int pluralityVsCondorcet = 0;
     private static int bordaCountVsCondorcet = 0;
+    private static Scanner keyboard = new Scanner(System.in);
 
     public static void main(String[] args) {
         getUserInputs();
@@ -28,95 +35,145 @@ public class Election {
     }
 
     private static void getUserInputs() {
+        getNumberOfCandidates();
+        getNumberOfVoters();
+        getLevelOfPolarity();
 
-        Scanner keyboard = new Scanner(System.in);
+ 
+
+        boolean promptUser = determinePorbability(polarityLevel);
+        if (promptUser) {
+
+           int id =  getIdOfPolarizingCandidate();
+            candidates[id - 1].setPolarized();
+        }
+        getNumberOfSamples();
+
+    }
+
+    private static void getNumberOfCandidates() {
+       
         boolean valid;
         do {
             valid = true;
             System.out.println("Enter number of candidates");
             try {
                 numberOfCandidates = keyboard.nextInt();
-                if (numberOfCandidates < 1) {
+                if (numberOfCandidates < MIN_NUMBER_OF_CANDIDATES) {
                     throw new Exception();
                 }
                 createCandidates();
-            } catch (Exception e) {
-                System.out.println("Invalid value entered for number of candidates");
+            } catch (InputMismatchException e) {
+                System.out.println("Non-numeric value entered for number of candidates");
                 keyboard.nextLine();
+                valid = false;
+            } catch (Exception e) {
+                System.out.println("Invalid value entered for number of candidates, must be at least " + MIN_NUMBER_OF_CANDIDATES);
                 valid = false;
             }
 
         } while (!valid);
+
+    }
+
+    private static void getNumberOfVoters() {
+        
+        boolean valid;
         do {
             valid = true;
             try {
                 System.out.println("Enter number of voters");
                 numberOfVoters = keyboard.nextInt();
-                if (numberOfVoters < 1) {
+                if (numberOfVoters < MIN_NUMBER_OF_VOTERS) {
                     throw new Exception();
                 }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Non-numeric value entered for number of voters");
+                keyboard.nextLine();
+                valid = false;
             } catch (Exception e) {
-                System.out.println("Invalid value entered for number of voters");
+                System.out.println("Invalid value entered for number of candidates, must be at least " + MIN_NUMBER_OF_VOTERS);
                 keyboard.nextLine();
                 valid = false;
 
             }
         } while (!valid);
+    }
 
+    private static void getLevelOfPolarity() {
+        
+        boolean valid;
         do {
             valid = true;
             try {
-                System.out.println("Level of Polarity? (0-10)");
+                System.out.println("Level of polarity? (0-10)");
                 polarityLevel = keyboard.nextInt();
-                if (polarityLevel < 0 || polarityLevel > 10) {
+                if (polarityLevel < MIN_POLARITY_LEVEL || polarityLevel > MAX_POLARITY_LEVEL) {
                     throw new Exception();
                 }
+            } catch (InputMismatchException e) {
+                System.out.println("Non-numeric value entered for polarity");
+                keyboard.nextLine();
+                valid = false;
             } catch (Exception e) {
-                System.out.println("Invalid value entered for Polarity Level");
+                System.out.println("Invalid value entered for level of polarity, must be between " + MIN_POLARITY_LEVEL + " and " + MAX_POLARITY_LEVEL);
                 keyboard.nextLine();
                 valid = false;
 
             }
         } while (!valid);
+    }
 
-        int id = 0;
+    private static int getIdOfPolarizingCandidate() {
+        
+        boolean valid;
+        int id=0;
+        do {
+            valid = true;
+            try {
+                System.out.println("Id of Polarizing candidate?");
+                id = keyboard.nextInt();
+                if (id < 1 || id > numberOfCandidates) {
+                    throw new Exception();
 
-        boolean promptUser = determinePorbability(polarityLevel);
-        if (promptUser) {
-
-            do {
-                valid = true;
-                try {
-                    System.out.println("Id of Polarizing candidate?");
-                    id = keyboard.nextInt();
-                    if (id < 1 || id > numberOfCandidates) {
-                        throw new Exception();
-
-                    }
-                } catch (Exception e) {
-                    System.out.println("Invalid value entered for Polarizing candidate");
-                    keyboard.nextLine();
-                    valid = false;
                 }
-            } while (!valid);
+            } catch (InputMismatchException e) {
+                System.out.println("Non-numeric value entered for Id of polarizing candidate");
+                keyboard.nextLine();
+                valid = false;
+            } catch (Exception e) {
+                System.out.println("Invalid value entered for Id of polarizing candidate, must be between 1 and " + numberOfCandidates);
+                keyboard.nextLine();
+                valid = false;
 
-            candidates[id - 1].setPolarized();
-        }
+            }
+        } while (!valid);
+     return id;
+    }
+
+    private static void getNumberOfSamples() {
+        Scanner keyboard = new Scanner(System.in);
+        boolean valid;
         do {
             valid = true;
             try {
                 System.out.println("Number of Samples?");
                 numberOfSamples = keyboard.nextInt();
-                if (numberOfSamples < 1) {
+                if (numberOfSamples < MIN_NUMBER_OF_SAMPLES) {
                     throw new Exception();
                 }
-            } catch (Exception e) {
-                System.out.println("Invalid value entered for number of samples");
+            } catch (InputMismatchException e) {
+                System.out.println("Non-numeric value entered for number of samples");
                 keyboard.nextLine();
                 valid = false;
+            } catch (Exception e) {
+                System.out.println("Invalid value entered for number of samples, must be at least " + MIN_NUMBER_OF_SAMPLES);
+                keyboard.nextLine();
+                valid = false;
+
             }
         } while (!valid);
-
     }
 
     private static void runElection() {
@@ -450,7 +507,7 @@ public class Election {
 
     private static boolean determinePorbability(int polarityLevel) {
         List<String> probabilityList;
-        Random rand=new Random();
+        Random rand = new Random();
         switch (polarityLevel) {
 
             case 0:
@@ -565,7 +622,7 @@ public class Election {
             default:
                 return false;
 
-        } 
-            }
+        }
+    }
 
 }

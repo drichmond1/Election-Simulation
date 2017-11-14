@@ -36,12 +36,16 @@ public class Election {
 
     private static void getUserInputs() {
         getNumberOfCandidates();
+        createCandidates();
+        
         getNumberOfVoters();
+        createVoters();
+        
         getLevelOfPolarity();
 
  
 
-        boolean promptUser = determinePorbability(polarityLevel);
+        boolean promptUser = determineProbability(polarityLevel);
         if (promptUser) {
 
            int id =  getIdOfPolarizingCandidate();
@@ -62,10 +66,10 @@ public class Election {
                 if (numberOfCandidates < MIN_NUMBER_OF_CANDIDATES) {
                     throw new Exception();
                 }
-                createCandidates();
+                
             } catch (InputMismatchException e) {
                 System.out.println("Non-numeric value entered for number of candidates");
-                KEYBOARD.nextLine();
+                KEYBOARD.nextLine(); //This consumes a new line character 
                 valid = false;
             } catch (Exception e) {
                 System.out.println("Invalid value entered for number of candidates, must be at least " + MIN_NUMBER_OF_CANDIDATES);
@@ -90,11 +94,11 @@ public class Election {
 
             } catch (InputMismatchException e) {
                 System.out.println("Non-numeric value entered for number of voters");
-                KEYBOARD.nextLine();
+                KEYBOARD.nextLine(); //This consumes a new line character
                 valid = false;
             } catch (Exception e) {
                 System.out.println("Invalid value entered for number of candidates, must be at least " + MIN_NUMBER_OF_VOTERS);
-                KEYBOARD.nextLine();
+                KEYBOARD.nextLine(); //This consumes a new line character
                 valid = false;
 
             }
@@ -107,18 +111,18 @@ public class Election {
         do {
             valid = true;
             try {
-                System.out.println("Level of polarity? (0-10)");
+                System.out.println("Level of polarity? ("+MIN_POLARITY_LEVEL+"-"+MAX_POLARITY_LEVEL+")");
                 polarityLevel = KEYBOARD.nextInt();
                 if (polarityLevel < MIN_POLARITY_LEVEL || polarityLevel > MAX_POLARITY_LEVEL) {
                     throw new Exception();
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Non-numeric value entered for polarity");
-                KEYBOARD.nextLine();
+                KEYBOARD.nextLine();//This consumes a new line character
                 valid = false;
             } catch (Exception e) {
                 System.out.println("Invalid value entered for level of polarity, must be between " + MIN_POLARITY_LEVEL + " and " + MAX_POLARITY_LEVEL);
-                KEYBOARD.nextLine();
+                KEYBOARD.nextLine();//This consumes a new line character
                 valid = false;
 
             }
@@ -140,11 +144,11 @@ public class Election {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Non-numeric value entered for Id of polarizing candidate");
-                KEYBOARD.nextLine();
+                KEYBOARD.nextLine(); //This consumes a new line character
                 valid = false;
             } catch (Exception e) {
                 System.out.println("Invalid value entered for Id of polarizing candidate, must be between 1 and " + numberOfCandidates);
-                KEYBOARD.nextLine();
+                KEYBOARD.nextLine(); //This consumes a new line character
                 valid = false;
 
             }
@@ -164,11 +168,11 @@ public class Election {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Non-numeric value entered for number of samples");
-                KEYBOARD.nextLine();
+                KEYBOARD.nextLine(); //This consumes a new line character
                 valid = false;
             } catch (Exception e) {
                 System.out.println("Invalid value entered for number of samples, must be at least " + MIN_NUMBER_OF_SAMPLES);
-                KEYBOARD.nextLine();
+                KEYBOARD.nextLine(); //This consumes a new line character
                 valid = false;
 
             }
@@ -178,8 +182,7 @@ public class Election {
     private static void runElection() {
 
         for (int sample = 1; sample <= numberOfSamples; sample++) {
-            createVoters();
-
+            
             assignPreferences();
 
             setPreferencesStrength(polarityLevel);
@@ -233,7 +236,7 @@ public class Election {
     }
 
     private static void createCandidates() {
-        KEYBOARD.nextLine();
+        KEYBOARD.nextLine(); //This consumes a new line character
         candidates = new Candidate[numberOfCandidates];
         for (int i = 0; i < numberOfCandidates; i++) {
             System.out.println("name of candidate " + (i + 1));
@@ -254,144 +257,14 @@ public class Election {
     }
 
     private static void setPreferencesStrength(int polarityLevel) {
-        try {
-            if (polarityLevel < 0 || polarityLevel > 10) {
-                throw new IllegalArgumentException();
-            }
-        } catch (IllegalArgumentException e) {
-            do {
-                System.out.println("Enter a valid level polarity (0-10)");
-                
-                polarityLevel = KEYBOARD.nextInt();
-            } while (polarityLevel < 0 || polarityLevel > 10);
-        }
-
-        switch (polarityLevel) {
-            case 0: {
-                for (int i = 0; i < numberOfVoters; i++) {
-                    voters[i].setStrengthOfPreferences(0);
-                }
-                break;
-            }
-            case 1: {
-                int margin = (int) Math.ceil(0.1 * numberOfVoters);
-
-                for (int i = 0; i < margin; i++) {
+        int margin = (int) Math.ceil((double)(polarityLevel/MAX_POLARITY_LEVEL) * numberOfVoters);
+        System.out.println("Margin is "+ margin);
+          for (int i = 0; i < margin; i++) {
                     voters[i].setStrengthOfPreferences(10);
                 }
                 for (int i = margin; i < numberOfVoters; i++) {
                     voters[i].setStrengthOfPreferences(0);
                 }
-                break;
-
-            }
-            case 2: {
-                int margin = (int) Math.ceil(0.2 * numberOfVoters);
-
-                for (int i = 0; i < margin; i++) {
-                    voters[i].setStrengthOfPreferences(10);
-                }
-                for (int i = margin; i < numberOfVoters; i++) {
-                    voters[i].setStrengthOfPreferences(0);
-                }
-                break;
-
-            }
-            case 3: {
-                int margin = (int) Math.ceil(0.3 * numberOfVoters);
-
-                for (int i = 0; i < margin; i++) {
-                    voters[i].setStrengthOfPreferences(10);
-                }
-                for (int i = margin; i < numberOfVoters; i++) {
-                    voters[i].setStrengthOfPreferences(0);
-                }
-                break;
-
-            }
-            case 4: {
-                int margin = (int) Math.ceil(0.4 * numberOfVoters);
-
-                for (int i = 0; i < margin; i++) {
-                    voters[i].setStrengthOfPreferences(10);
-                }
-                for (int i = margin; i < numberOfVoters; i++) {
-                    voters[i].setStrengthOfPreferences(0);
-                }
-                break;
-
-            }
-            case 5: {
-                int margin = (int) Math.ceil(0.5 * numberOfVoters);
-
-                for (int i = 0; i < margin; i++) {
-                    voters[i].setStrengthOfPreferences(10);
-                }
-                for (int i = margin; i < numberOfVoters; i++) {
-                    voters[i].setStrengthOfPreferences(0);
-                }
-                break;
-
-            }
-            case 6: {
-                int margin = (int) Math.ceil(0.6 * numberOfVoters);
-
-                for (int i = 0; i < margin; i++) {
-                    voters[i].setStrengthOfPreferences(10);
-                }
-                for (int i = margin; i < numberOfVoters; i++) {
-                    voters[i].setStrengthOfPreferences(0);
-                }
-                break;
-
-            }
-            case 7: {
-                int margin = (int) Math.ceil(0.7 * numberOfVoters);
-
-                for (int i = 0; i < margin; i++) {
-                    voters[i].setStrengthOfPreferences(10);
-                }
-                for (int i = margin; i < numberOfVoters; i++) {
-                    voters[i].setStrengthOfPreferences(0);
-                }
-                break;
-
-            }
-            case 8: {
-                int margin = (int) Math.ceil(0.8 * numberOfVoters);
-
-                for (int i = 0; i < margin; i++) {
-                    voters[i].setStrengthOfPreferences(10);
-                }
-                for (int i = margin; i < numberOfVoters; i++) {
-                    voters[i].setStrengthOfPreferences(0);
-                }
-                break;
-
-            }
-            case 9: {
-                int margin = (int) Math.ceil(0.9 * numberOfVoters);
-
-                for (int i = 0; i < margin; i++) {
-                    voters[i].setStrengthOfPreferences(10);
-                }
-                for (int i = margin; i < numberOfVoters; i++) {
-                    voters[i].setStrengthOfPreferences(0);
-                }
-                break;
-
-            }
-            case 10: {
-
-                for (int i = 0; i < numberOfVoters; i++) {
-                    voters[i].setStrengthOfPreferences(10);
-                }
-                break;
-
-            }
-
-        }
-
     }
 
     private static void showPreferences() {
@@ -504,124 +377,135 @@ public class Election {
         System.out.println("Borda count picked the condorcet winner, " + bordaCountVsCondorcet + " time(s).");
     }
 
-    private static boolean determinePorbability(int polarityLevel) {
-        List<String> probabilityList;
+    private static boolean determineProbability(int polarityLevel) {
+        List<String> probabilityList=new ArrayList();
         Random rand = new Random();
-        switch (polarityLevel) {
-
-            case 0:
-                return false;
-            case 1: {
-                probabilityList = new ArrayList();
-                probabilityList.add("yes");
-                for (int i = 0; i < 9; i++) {
-                    probabilityList.add("no");
-                }
-                Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)).equals("yes");
-            }
-            case 2: {
-                probabilityList = new ArrayList();
-                probabilityList.add("yes");
-                probabilityList.add("yes");
-                for (int i = 0; i < 8; i++) {
-                    probabilityList.add("no");
-                }
-                Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)).equals("yes");
-            }
-            case 3: {
-                probabilityList = new ArrayList();
-                probabilityList.add("yes");
-                probabilityList.add("yes");
-                probabilityList.add("yes");
-                for (int i = 0; i < 7; i++) {
-                    probabilityList.add("no");
-                }
-                Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)).equals("yes");
-            }
-            case 4: {
-                probabilityList = new ArrayList();
-                for (int i = 0; i < 4; i++) {
+        int yesMargin= (int)(Math.ceil(((double)polarityLevel/MAX_POLARITY_LEVEL)*MAX_POLARITY_LEVEL));
+        System.out.println("yes margin is"+ yesMargin);
+                for (int i = 0; i < yesMargin; i++) {
                     probabilityList.add("yes");
                 }
 
-                for (int i = 0; i < 6; i++) {
+                for (int i = yesMargin; i < MAX_POLARITY_LEVEL; i++) {
                     probabilityList.add("no");
                 }
                 Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)).equals("yes");
-            }
-
-            case 5: {
-                probabilityList = new ArrayList();
-                for (int i = 0; i < 5; i++) {
-                    probabilityList.add("yes");
-                }
-
-                for (int i = 0; i < 5; i++) {
-                    probabilityList.add("no");
-                }
-                Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)).equals("yes");
-            }
-            case 6: {
-                probabilityList = new ArrayList();
-                for (int i = 0; i < 6; i++) {
-                    probabilityList.add("yes");
-                }
-
-                for (int i = 0; i < 4; i++) {
-                    probabilityList.add("no");
-                }
-                Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)).equals("yes");
-            }
-            case 7: {
-                probabilityList = new ArrayList();
-                for (int i = 0; i < 7; i++) {
-                    probabilityList.add("yes");
-                }
-
-                for (int i = 0; i < 3; i++) {
-                    probabilityList.add("no");
-                }
-                Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)).equals("yes");
-            }
-            case 8: {
-                probabilityList = new ArrayList();
-                for (int i = 0; i < 8; i++) {
-                    probabilityList.add("yes");
-                }
-
-                for (int i = 0; i < 2; i++) {
-                    probabilityList.add("no");
-                }
-                Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)).equals("yes");
-            }
-            case 9: {
-                probabilityList = new ArrayList();
-                for (int i = 0; i < 9; i++) {
-                    probabilityList.add("yes");
-                }
-
-                for (int i = 0; i < 1; i++) {
-                    probabilityList.add("no");
-                }
-                Collections.shuffle(probabilityList);
-                return probabilityList.get(rand.nextInt(10)).equals("yes");
-            }
-
-            case 10: {
-                return true;
-            }
-            default:
-                return false;
-
-        }
+                return probabilityList.get(rand.nextInt(MAX_POLARITY_LEVEL)).equals("yes");
+//        switch (polarityLevel) {
+//
+//            case 0:
+//                return false;
+//            case 1: {
+//                probabilityList = new ArrayList();
+//                probabilityList.add("yes");
+//                for (int i = 0; i < 9; i++) {
+//                    probabilityList.add("no");
+//                }
+//                Collections.shuffle(probabilityList);
+//                return probabilityList.get(rand.nextInt(10)).equals("yes");
+//            }
+//            case 2: {
+//                probabilityList = new ArrayList();
+//                probabilityList.add("yes");
+//                probabilityList.add("yes");
+//                for (int i = 0; i < 8; i++) {
+//                    probabilityList.add("no");
+//                }
+//                Collections.shuffle(probabilityList);
+//                return probabilityList.get(rand.nextInt(10)).equals("yes");
+//            }
+//            case 3: {
+//                probabilityList = new ArrayList();
+//                probabilityList.add("yes");
+//                probabilityList.add("yes");
+//                probabilityList.add("yes");
+//                for (int i = 0; i < 7; i++) {
+//                    probabilityList.add("no");
+//                }
+//                Collections.shuffle(probabilityList);
+//                return probabilityList.get(rand.nextInt(10)).equals("yes");
+//            }
+//            case 4: {
+//                probabilityList = new ArrayList();
+//                for (int i = 0; i < 4; i++) {
+//                    probabilityList.add("yes");
+//                }
+//
+//                for (int i = 0; i < 6; i++) {
+//                    probabilityList.add("no");
+//                }
+//                Collections.shuffle(probabilityList);
+//                return probabilityList.get(rand.nextInt(10)).equals("yes");
+//            }
+//
+//            case 5: {
+//                probabilityList = new ArrayList();
+//                for (int i = 0; i < 5; i++) {
+//                    probabilityList.add("yes");
+//                }
+//
+//                for (int i = 0; i < 5; i++) {
+//                    probabilityList.add("no");
+//                }
+//                Collections.shuffle(probabilityList);
+//                return probabilityList.get(rand.nextInt(10)).equals("yes");
+//            }
+//            case 6: {
+//                probabilityList = new ArrayList();
+//                for (int i = 0; i < 6; i++) {
+//                    probabilityList.add("yes");
+//                }
+//
+//                for (int i = 0; i < 4; i++) {
+//                    probabilityList.add("no");
+//                }
+//                Collections.shuffle(probabilityList);
+//                return probabilityList.get(rand.nextInt(10)).equals("yes");
+//            }
+//            case 7: {
+//                probabilityList = new ArrayList();
+//                for (int i = 0; i < 7; i++) {
+//                    probabilityList.add("yes");
+//                }
+//
+//                for (int i = 0; i < 3; i++) {
+//                    probabilityList.add("no");
+//                }
+//                Collections.shuffle(probabilityList);
+//                return probabilityList.get(rand.nextInt(10)).equals("yes");
+//            }
+//            case 8: {
+//                probabilityList = new ArrayList();
+//                for (int i = 0; i < 8; i++) {
+//                    probabilityList.add("yes");
+//                }
+//
+//                for (int i = 0; i < 2; i++) {
+//                    probabilityList.add("no");
+//                }
+//                Collections.shuffle(probabilityList);
+//                return probabilityList.get(rand.nextInt(10)).equals("yes");
+//            }
+//            case 9: {
+//                probabilityList = new ArrayList();
+//                for (int i = 0; i < 9; i++) {
+//                    probabilityList.add("yes");
+//                }
+//
+//                for (int i = 0; i < 1; i++) {
+//                    probabilityList.add("no");
+//                }
+//                Collections.shuffle(probabilityList);
+//                return probabilityList.get(rand.nextInt(10)).equals("yes");
+//            }
+//
+//            case 10: {
+//                return true;
+//            }
+//            default:
+//                return false;
+//
+//        }
     }
 
 }

@@ -21,7 +21,7 @@ public class Majority implements VotingSystem {
     private Voter[] voters;
     private Map<String,Integer> candidates;
     private int[][] positions;
-    private double supportPercentage;
+    
 
     public Majority(Voter[] voters, Candidate[] candidates) {
         this.voters = voters;

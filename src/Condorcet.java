@@ -10,7 +10,7 @@ public class Condorcet implements VotingSystem {
     private int winnerId;
     private Voter[] voters;
     private Map<String, Integer> candidates;
-    private double supportPercentage;
+   
 
     public Condorcet(Voter[] voters, Candidate[] candidates, Map<List<Candidate>, Integer> aggregatePreferences) {
         this.aggregatePreferences = aggregatePreferences;
@@ -78,6 +78,7 @@ public class Condorcet implements VotingSystem {
             }
             if (condorcet) {
                 winner = candidates[candidateA].getName();
+                winnerId=this.candidates.get(winner);
                 return;
             }
         }

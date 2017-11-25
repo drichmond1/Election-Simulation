@@ -21,7 +21,7 @@ public class BordaCount implements VotingSystem {
     private double winnerAverageScore;
     private Voter[] voters;
     private Map<String, Integer> candidates;
-    private double supportPercentage;
+   
 
     public BordaCount(Voter[] voters, Candidate[] candidates) {
         this.voters = voters;

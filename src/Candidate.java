@@ -12,6 +12,10 @@ public class Candidate {
     private String name; 
     private int id;
     private boolean polarized;
+    
+    public Candidate(){
+    
+    }
      public Candidate(int id,String name) {
          this.id=id;
          this.name=name;
